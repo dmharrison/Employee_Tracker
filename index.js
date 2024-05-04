@@ -6,7 +6,7 @@ init();
 
 // Display logo text, load main prompts
 function init() {
-  const logoText = logo({ name: "City of Pawnee" }).render();
+  const logoText = logo({ name: "Employee Tracker" }).render();
 
   console.log(logoText);
 
