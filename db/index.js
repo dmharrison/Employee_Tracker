@@ -41,7 +41,10 @@ class DB {
     ]);
   }
   // BONUS- Create a query to Remove an employee with the given id
-
+  removeEmployeeById(id) {
+    const sql = `DELETE FROM employee WHERE employee_id = $1`;
+    return this.query(sql, [id]);
+  }
   // TODO- Create a query to Update the given employee's role
 
   // BONUS- Create a query to Update the given employee's manager
