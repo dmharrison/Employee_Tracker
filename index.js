@@ -85,6 +85,18 @@ function viewEmployeesByManager(managerId) {
     })
     .then(() => loadMainPrompts());
 }
+// TODO- Create a function to Add an employee
+function addEmployee(employeeData) {
+  db.createEmployee(employeeData)
+    .then(() => {
+      console.log("Employee Added Successfully.");
+      loadMainPrompts();
+    })
+    .catch((err) => {
+      console.error("Error Adding Employee", err);
+      loadMainPrompts();
+    });
+}
 // BONUS- Create a function to Delete an employee
 function removeEmployee(id) {
   db.removeEmployeeById(id)
@@ -122,7 +134,7 @@ function updateEmployeeManager(employeeId, managerId) {
     });
 }
 // TODO- Create a function to View all roles
-function viewRoles() {
+function viewAllRoles() {
   db.findAllRoles()
     .then(({ rows }) => {
       let roles = rows;
@@ -156,14 +168,40 @@ function removeRole(id) {
     });
 }
 // TODO- Create a function to View all deparments
-
+function viewAllDepartments() {
+  db.findAllDepartments()
+    .then(({ rows }) => {
+      let departments = rows;
+      console.log("\n");
+      console.table(departments);
+    })
+    .then(() => loadMainPrompts());
+}
 // TODO- Create a function to Add a department
-
+function addDepartment(departmentData) {
+  db.createDepartment(departmentData)
+    .then(() => {
+      console.log("Department Added Successfully.");
+      loadMainPrompts();
+    })
+    .catch((err) => {
+      console.error("Error Updating Department", err);
+      loadMainPrompts();
+    });
+}
 // BONUS- Create a function to Delete a department
-
+function removeDepartment(id) {
+  db.removeDepartmentById(id)
+    .then(() => {
+      console.log("Department Removed Successfully.");
+      loadMainPrompts();
+    })
+    .catch((err) => {
+      console.error("Error Removing Department", err);
+      loadMainPrompts();
+    });
+}
 // BONUS- Create a function to View all departments and show their total utilized department budget
-
-// TODO- Create a function to Add an employee
 
 // Exit the application
 function quit() {
