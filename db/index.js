@@ -74,7 +74,10 @@ class DB {
     ]);
   }
   // BONUS- Create a query to Remove a role from the db
-
+  removeRoleById(id) {
+    const sql = `DELETE FROM role WHERE role_id = $1`;
+    return this.query(sql, [id]);
+  }
   // TODO- Create a query to Find all departments
 
   // BONUS- Create a query to Find all departments, join with employees and roles and sum up utilized department budget
