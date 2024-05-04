@@ -1,6 +1,7 @@
 const { prompt } = require("inquirer");
 const logo = require("asciiart-logo");
 const db = require("./db");
+const { default: Prompt } = require("inquirer/lib/prompts/base");
 
 init();
 
@@ -18,10 +19,11 @@ function loadMainPrompts() {
     {
       // TODO- Create first question user will see- "What would you like to do?"
       type: "list",
-      name: "action",
+      name: "choice",
       message: "What would you like to do?",
       choices: [
-        "View all employees",
+        "View All Employees",
+        "View Employees By Department",
         "View all departments",
         "View all roles",
         "Add employee",
@@ -33,17 +35,57 @@ function loadMainPrompts() {
     },
   ]).then((res) => {
     // TODO- Create a variable to store the user's choice
+    let userChoice = res.choice;
     // TODO- Create a switch statement to call the appropriate function depending on what the user chose
+    console.log(userChoice);
+    switch (userChoice) {
+      case "View All Employees":
+        viewEmployees();
+        break;
+      case "View Employees By Department":
+        viewEmployeesByDepartment();
+        break;
+      case "View Employees By Manager":
+        viewEmployeesByManager();
+        break;
+
+      default:
+        quit();
+    }
   });
 }
 
 // TODO- Create a function to View all employees
-function viewEmployees() {}
+function viewEmployees() {
+  db.findAllEmployees()
+    .then(({ rows }) => {
+      let employees = rows;
+      console.log("\n");
+      console.table(employees);
+    })
+    .then(() => loadMainPrompts());
+}
 
 // BONUS- Create a function to View all employees that belong to a department
-
+function viewEmployeesByDepartment(departmentId) {
+  db.findAllEmployeesInDepartment(departmentId)
+    .then(({ rows }) => {
+      let employees = rows;
+      console.log("\n");
+      console.table(employees);
+    })
+    .then(() => loadMainPrompts());
+}
 // BONUS- Create a function to View all employees that report to a specific manager
-
+function viewEmployeesByManager(managerId) {
+  db.findAllEmployeesByManager(managerId)
+    .then(({ rows }) => {
+      let employees = rows;
+      console.log("\n");
+      console.table(employees);
+    })
+    .then(() => loadMainPrompts());
+}
 // BONUS- Create a function to Delete an employee
 
 // TODO- Create a function to Update an employee's role
