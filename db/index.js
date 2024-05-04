@@ -31,7 +31,15 @@ class DB {
     return this.query(sql, [id]);
   }
   // TODO- Create a query to Create a new employee
-
+  createEmployee(employeeData) {
+    const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ($1, $2, $3, $4)`;
+    return this.query(sql, [
+      employeeData.first_name,
+      employeeData.last_name,
+      employeeData.role_id,
+      employeeData.manager_id,
+    ]);
+  }
   // BONUS- Create a query to Remove an employee with the given id
 
   // TODO- Create a query to Update the given employee's role
