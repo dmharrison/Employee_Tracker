@@ -107,6 +107,15 @@ class DB {
     return this.query(sql, [id]);
   }
   // BONUS- Create a query to Find all employees in a given department, join with roles to display role titles
+  // BONUS
+  findAllEmployeesInDepartment(departmentId) {
+    const sql = `SELECT employee.*,
+    role.title AS role_title 
+  FROM employee 
+  JOIN role ON employee.role_id = role.role_id 
+  WHERE role.department_id = $1`;
+    return this.query(sql, [departmentId]);
+  }
 
   // BONUS- Create a query to Find all employees by manager, join with departments and roles to display titles and department names
 }
