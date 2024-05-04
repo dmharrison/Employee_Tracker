@@ -52,13 +52,27 @@ class DB {
   }
   // BONUS- Create a query to Update the given employee's manager
   updateEmployeeManager(employeeId, managerId) {
-    const sql = `UPDATE employee SET managerId = $1 WHERE employee_id =$2`;
+    const sql = `UPDATE employee SET manager_id = $1 WHERE employee_id =$2`;
     return this.query(sql, [managerId, employeeId]);
   }
   // TODO- Create a query to Find all roles, join with departments to display the department name
-
+  findAllRoles() {
+    const sql = `SELECT role.*,
+   department.name as department_name
+   FROM role
+   JOIN department ON role.department_id as department.id`;
+    return this.query(sql);
+  }
   // TODO- Create a query to Create a new role
-
+  createRole(roleData) {
+    const sql = `INSERT INTO role(title, salary, department_id)
+  VALUES($1,$2,$3)`;
+    return this.query(sql, [
+      roleData.title,
+      roleData.salary,
+      roleData.department_id,
+    ]);
+  }
   // BONUS- Create a query to Remove a role from the db
 
   // TODO- Create a query to Find all departments
