@@ -46,9 +46,15 @@ class DB {
     return this.query(sql, [id]);
   }
   // TODO- Create a query to Update the given employee's role
-
+  updateEmployeeRole(employeeId, roleId) {
+    const sql = `UPDATE employee SET role_id = $1 WHERE employee_id = $2`;
+    return this.query(sql, [roleId, employeeId]);
+  }
   // BONUS- Create a query to Update the given employee's manager
-
+  updateEmployeeManager(employeeId, managerId) {
+    const sql = `UPDATE employee SET managerId = $1 WHERE employee_id =$2`;
+    return this.query(sql, [managerId, employeeId]);
+  }
   // TODO- Create a query to Find all roles, join with departments to display the department name
 
   // TODO- Create a query to Create a new role
