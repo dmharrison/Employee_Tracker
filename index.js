@@ -23,13 +23,12 @@ function loadMainPrompts() {
       message: "What would you like to do?",
       choices: [
         "View All Employees",
-        "View Employees By Department",
-        "View all departments",
-        "View all roles",
-        "Add employee",
-        "Add department",
-        "Add role",
-        "Update employee role",
+        "View All departments",
+        "View All roles",
+        "Add Employee",
+        "Add Department",
+        "Add Role",
+        "Update Employee Role",
         "Exit",
       ],
     },
@@ -87,9 +86,29 @@ function viewEmployeesByManager(managerId) {
     .then(() => loadMainPrompts());
 }
 // BONUS- Create a function to Delete an employee
-
+function removeEmployee(id) {
+  db.removeEmployeeById(id)
+    .then(() => {
+      console.log("Employee Removed Successfully.");
+      loadMainPrompts();
+    })
+    .catch((err) => {
+      console.error("Error Removing Employee", err);
+      loadMainPrompts();
+    });
+}
 // TODO- Create a function to Update an employee's role
-
+function updateEmployeeByRole(employeeId, roleId) {
+  db.updateEmployeeRole(employeeId, roleId)
+    .then(() => {
+      console.log("Employee Role Update.");
+      loadMainPrompts();
+    })
+    .catch((err) => {
+      console.error("Error Updating Employee Role", err);
+      loadMainPrompts();
+    });
+}
 // BONUS- Create a function to Update an employee's manager
 
 // TODO- Create a function to View all roles

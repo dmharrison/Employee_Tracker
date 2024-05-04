@@ -112,7 +112,7 @@ class DB {
     const sql = `SELECT employee.*,
     role.title AS role_title 
     FROM employee 
-    JOIN role ON employee.role_id = role.role_id 
+    JOIN role ON employee.role_id = role.id 
     WHERE role.department_id = $1`;
     return this.query(sql, [departmentId]);
   }
@@ -123,7 +123,7 @@ class DB {
     role.title AS role_title,
     department.name AS department_name
     FROM employee 
-    JOIN role ON employee.role_id = role.role_id
+    JOIN role ON employee.role_id = role_id
     JOIN department ON role.department_id = department.department_id
     WHERE employee.manager_id = $1`;
     return this.query(sql, [managerId]);
