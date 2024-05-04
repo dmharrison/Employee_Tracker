@@ -111,13 +111,23 @@ class DB {
   findAllEmployeesInDepartment(departmentId) {
     const sql = `SELECT employee.*,
     role.title AS role_title 
-  FROM employee 
-  JOIN role ON employee.role_id = role.role_id 
-  WHERE role.department_id = $1`;
+    FROM employee 
+    JOIN role ON employee.role_id = role.role_id 
+    WHERE role.department_id = $1`;
     return this.query(sql, [departmentId]);
   }
 
   // BONUS- Create a query to Find all employees by manager, join with departments and roles to display titles and department names
+  findAllEmployeesByManager(managerId) {
+    const sql = `SELECT employee.*, 
+    role.title AS role_title,
+    department.name AS department_name
+    FROM employee 
+    JOIN role ON employee.role_id = role.role_id
+    JOIN department ON role.department_id = department.department_id
+    WHERE employee.manager_id = $1`;
+    return this.query(sql, [managerId]);
+  }
 }
 
 module.exports = new DB();
