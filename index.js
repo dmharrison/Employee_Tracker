@@ -202,7 +202,15 @@ function removeDepartment(id) {
     });
 }
 // BONUS- Create a function to View all departments and show their total utilized department budget
-
+function viewutilizedDepartmentBudget() {
+  db.findAllDepartmentsWithBudget()
+    .then(({ rows }) => {
+      let departments = rows;
+      console.log("\n");
+      console.table(departments);
+    })
+    .then(() => loadMainPrompts());
+}
 // Exit the application
 function quit() {
   console.log("Goodbye!");
