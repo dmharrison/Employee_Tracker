@@ -15,7 +15,22 @@ function init() {
 
 function loadMainPrompts() {
   prompt([
-    // TODO- Create first question user will see- "What would you like to do?"
+    {
+      // TODO- Create first question user will see- "What would you like to do?"
+      type: "list",
+      name: "action",
+      message: "What would you like to do?",
+      choices: [
+        "View all employees",
+        "View all departments",
+        "View all roles",
+        "Add employee",
+        "Add department",
+        "Add role",
+        "Update employee role",
+        "Exit",
+      ],
+    },
   ]).then((res) => {
     // TODO- Create a variable to store the user's choice
     // TODO- Create a switch statement to call the appropriate function depending on what the user chose
