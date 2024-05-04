@@ -84,11 +84,28 @@ class DB {
     return this.query(sql);
   }
   // BONUS- Create a query to Find all departments, join with employees and roles and sum up utilized department budget
+  // BONUS
+  findAllDepartmentsWithBudget() {
+    const sql = `SELECT department.*,
+   SUM(role.salary)
+   AS utilized_budget
+   FROM department 
+   JOIN role ON department.id = role.department_id 
+   JOIN employee ON role.role_id = employee.role_id 
+   GROUP BY department.id`;
+    return this.query(sql);
+  }
 
   // TODO- Create a query to Create a new department
-
+  createDepartment(departmentData) {
+    const sql = `INSERT INTO department(name) VALUES($1)`;
+    return this.query(sql, [departmentData.name]);
+  }
   // BONUS- Create a query to Remove a department
-
+  removeDepartmentById(id) {
+    const sql = `DELETE FROM department WHERE department_id = $1`;
+    return this.query(sql, [id]);
+  }
   // BONUS- Create a query to Find all employees in a given department, join with roles to display role titles
 
   // BONUS- Create a query to Find all employees by manager, join with departments and roles to display titles and department names
