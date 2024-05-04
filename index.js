@@ -8,7 +8,7 @@ init();
 function init() {
   const logoText = logo({ name: "Employee Tracker" }).render();
 
-  console.log(logoText);
+  console.table(logoText);
 
   loadMainPrompts();
 }
