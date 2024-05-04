@@ -79,7 +79,10 @@ class DB {
     return this.query(sql, [id]);
   }
   // TODO- Create a query to Find all departments
-
+  findAllDepartments() {
+    const sql = `Select * FROM department`;
+    return this.query(sql);
+  }
   // BONUS- Create a query to Find all departments, join with employees and roles and sum up utilized department budget
 
   // TODO- Create a query to Create a new department
