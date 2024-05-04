@@ -98,10 +98,10 @@ function removeEmployee(id) {
     });
 }
 // TODO- Create a function to Update an employee's role
-function updateEmployeeByRole(employeeId, roleId) {
+function updateEmployeeRole(employeeId, roleId) {
   db.updateEmployeeRole(employeeId, roleId)
     .then(() => {
-      console.log("Employee Role Update.");
+      console.log("Employee Role Updated.");
       loadMainPrompts();
     })
     .catch((err) => {
@@ -110,13 +110,51 @@ function updateEmployeeByRole(employeeId, roleId) {
     });
 }
 // BONUS- Create a function to Update an employee's manager
-
+function updateEmployeeManager(employeeId, managerId) {
+  db.updateEmployeeManager(employeeId, managerId)
+    .then(() => {
+      console.log("Employee Manager Updated.");
+      loadMainPrompts();
+    })
+    .catch((err) => {
+      console.error("Error Updating Employee Manager", err);
+      loadMainPrompts();
+    });
+}
 // TODO- Create a function to View all roles
-
+function viewRoles() {
+  db.findAllRoles()
+    .then(({ rows }) => {
+      let roles = rows;
+      console.log("\n");
+      console.table(roles);
+    })
+    .then(() => loadMainPrompts());
+}
 // TODO- Create a function to Add a role
-
+function addRole(roleData) {
+  db.createRole(roleData)
+    .then(() => {
+      console.log("Role Added Successfully.");
+      loadMainPrompts();
+    })
+    .catch((err) => {
+      console.error("Error Updating Role", err);
+      loadMainPrompts();
+    });
+}
 // BONUS- Create a function to Delete a role
-
+function removeRole(id) {
+  db.removeRoleById(id)
+    .then(() => {
+      console.log("Role Removed Successfully.");
+      loadMainPrompts();
+    })
+    .catch((err) => {
+      console.error("Error Removing Role", err);
+      loadMainPrompts();
+    });
+}
 // TODO- Create a function to View all deparments
 
 // TODO- Create a function to Add a department
