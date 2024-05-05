@@ -95,7 +95,7 @@ function viewEmployeesByDepartment() {
 }
 // BONUS- Create a function to View all employees that report to a specific manager
 function viewEmployeesByManager() {
-  db.findAllEmployeesInDepartment().then(({ rows }) => {
+  db.findAllEmployees().then(({ rows }) => {
     let managers = rows;
     const managerChoices = managers.map(({ id, first_name, last_name }) => ({
       name: `${first_name} ${last_name}`,

@@ -123,8 +123,8 @@ class DB {
     role.title AS role_title,
     department.name AS department_name
     FROM employee 
-    JOIN role ON employee.role_id = role_id
-    JOIN department ON role.department_id = department.department_id
+    JOIN role ON employee.role_id = role.id
+    JOIN department ON role.department_id = department.id
     WHERE employee.manager_id = $1`;
     return this.query(sql, [managerId]);
   }
