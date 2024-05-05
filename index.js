@@ -23,6 +23,8 @@ function loadMainPrompts() {
       message: "What would you like to do?",
       choices: [
         "View All Employees",
+        "View Employees By Department",
+        "View Employees By Manager",
         "View All departments",
         "View All roles",
         "Add Employee",
@@ -66,8 +68,8 @@ function viewEmployees() {
 }
 
 // BONUS- Create a function to View all employees that belong to a department
-function viewEmployeesByDepartment(departmentId) {
-  db.findAllEmployeesInDepartment(departmentId).then(({ rows }) => {
+function viewEmployeesByDepartment() {
+  db.findAllDepartments().then(({ rows }) => {
     let departments = rows;
     const departmentChoices = departments.map(({ id, name }) => ({
       name: name,
@@ -92,14 +94,30 @@ function viewEmployeesByDepartment(departmentId) {
   });
 }
 // BONUS- Create a function to View all employees that report to a specific manager
-function viewEmployeesByManager(managerId) {
-  db.findAllEmployeesByManager(managerId)
-    .then(({ rows }) => {
-      let employees = rows;
-      console.log("\n");
-      console.table(employees);
-    })
-    .then(() => loadMainPrompts());
+function viewEmployeesByManager() {
+  db.findAllEmployeesInDepartment().then(({ rows }) => {
+    let managers = rows;
+    const managerChoices = managers.map(({ id, first_name, last_name }) => ({
+      name: `${first_name} ${last_name}`,
+      value: id,
+    }));
+
+    prompt([
+      {
+        type: "list",
+        name: "managerId",
+        message: "Which employee do you want to see direct reports for?",
+        choices: managerChoices,
+      },
+    ])
+      .then((res) => db.findAllEmployeesByManager(res.managerId))
+      .then(({ rows }) => {
+        let employees = rows;
+        console.log("\n");
+        console.table(employees);
+      })
+      .then(() => loadMainPrompts());
+  });
 }
 // TODO- Create a function to Add an employee
 function addEmployee(employeeData) {
