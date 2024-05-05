@@ -60,7 +60,7 @@ class DB {
     const sql = `SELECT role.*,
    department.name as department_name
    FROM role
-   JOIN department ON role.department_id as department.id`;
+   JOIN department ON role.department_id =department.id`;
     return this.query(sql);
   }
   // TODO- Create a query to Create a new role

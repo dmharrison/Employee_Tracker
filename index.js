@@ -25,9 +25,10 @@ function loadMainPrompts() {
         "View All Employees",
         "View Employees By Department",
         "View Employees By Manager",
+        "Add Employee",
+        "Remove Employee",
         "View All departments",
         "View All roles",
-        "Add Employee",
         "Add Department",
         "Add Role",
         "Update Employee Role",
@@ -48,6 +49,9 @@ function loadMainPrompts() {
         break;
       case "View Employees By Manager":
         viewEmployeesByManager();
+        break;
+      case "Add Employee":
+        addEmployee();
         break;
 
       default:
@@ -120,17 +124,75 @@ function viewEmployeesByManager() {
   });
 }
 // TODO- Create a function to Add an employee
-function addEmployee(employeeData) {
-  db.createEmployee(employeeData)
-    .then(() => {
-      console.log("Employee Added Successfully.");
-      loadMainPrompts();
+function addEmployee() {
+  db.findAllEmployees()
+    .then(({ rows }) => {
+      let managers = rows;
+      const managerChoices = managers.map(({ id, first_name, last_name }) => ({
+        name: `${first_name} ${last_name}`,
+        value: id,
+      }));
+
+      db.findAllRoles()
+        .then(({ rows }) => {
+          let roles = rows;
+          const roleChoices = roles.map(({ title }) => ({
+            name: title,
+          }));
+
+          prompt([
+            {
+              name: "first_name",
+              description: "Enter first name:",
+              required: true,
+            },
+            {
+              name: "last_name",
+              description: "Enter last name:",
+              required: true,
+            },
+            {
+              type: "list",
+              name: "role_id",
+              message: "What is the employee's role?",
+              choices: roleChoices,
+              required: true,
+            },
+            {
+              type: "list",
+              name: "manager_id",
+              message: "Who is the employee's manager? (optional):",
+              choices: managerChoices,
+            },
+          ])
+            .then((employeeData) => {
+              // Call createEmployee with the provided data
+              db.createEmployee(employeeData)
+                .then(() => {
+                  console.log("Employee Added Successfully.");
+                  loadMainPrompts();
+                })
+                .catch((err) => {
+                  console.error("Error Adding Employee", err);
+                  loadMainPrompts();
+                });
+            })
+            .catch((err) => {
+              console.error("Prompt error:", err);
+              loadMainPrompts();
+            });
+        })
+        .catch((err) => {
+          console.error("Error retrieving roles:", err);
+          loadMainPrompts();
+        });
     })
     .catch((err) => {
-      console.error("Error Adding Employee", err);
+      console.error("Error retrieving managers:", err);
       loadMainPrompts();
     });
 }
+
 // BONUS- Create a function to Delete an employee
 function removeEmployee(id) {
   db.removeEmployeeById(id)
@@ -236,7 +298,7 @@ function removeDepartment(id) {
     });
 }
 // BONUS- Create a function to View all departments and show their total utilized department budget
-function viewutilizedDepartmentBudget() {
+function viewUtilizedDepartmentBudget() {
   db.findAllDepartmentsWithBudget()
     .then(({ rows }) => {
       let departments = rows;
