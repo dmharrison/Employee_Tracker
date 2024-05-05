@@ -30,7 +30,7 @@ function loadMainPrompts() {
         "Update Employee Role",
         "View All roles",
         "Add Role",
-        "View All departments",
+        "View All Departments",
         "Add Department",
         "Exit",
       ],
@@ -61,6 +61,15 @@ function loadMainPrompts() {
         break;
       case "View All roles":
         viewAllRoles();
+        break;
+      case "Add Role":
+        addRole();
+        break;
+      case "View All Departments":
+        viewAllDepartments();
+        break;
+      case "Add Departments":
+        addRole();
         break;
 
       default:
