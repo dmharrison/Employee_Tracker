@@ -47,7 +47,7 @@ class DB {
   }
   // TODO- Create a query to Update the given employee's role
   updateEmployeeRole(employeeId, roleId) {
-    const sql = `UPDATE employee SET role_id = $1 WHERE employee_id = $2`;
+    const sql = `UPDATE employee SET role_id = $1 WHERE id = $2`;
     return this.query(sql, [roleId, employeeId]);
   }
   // BONUS- Create a query to Update the given employee's manager

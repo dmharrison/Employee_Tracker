@@ -27,11 +27,11 @@ function loadMainPrompts() {
         "View Employees By Manager",
         "Add Employee",
         "Remove Employee",
+        "Update Employee Role",
         "View All departments",
         "View All roles",
         "Add Department",
         "Add Role",
-        "Update Employee Role",
         "Exit",
       ],
     },
@@ -55,6 +55,9 @@ function loadMainPrompts() {
         break;
       case "Remove Employee":
         removeEmployee();
+        break;
+      case "Update Employee Role":
+        updateEmployeeRole();
         break;
 
       default:
@@ -225,17 +228,63 @@ function removeEmployee() {
   });
 }
 // TODO- Create a function to Update an employee's role
-function updateEmployeeRole(employeeId, roleId) {
-  db.updateEmployeeRole(employeeId, roleId)
-    .then(() => {
-      console.log("Employee Role Updated.");
-      loadMainPrompts();
+function updateEmployeeRole() {
+  db.findAllEmployees()
+    .then(({ rows }) => {
+      let employees = rows;
+      const employeeChoices = employees.map(
+        ({ id, first_name, last_name }) => ({
+          name: `${first_name} ${last_name}`,
+          value: id,
+        })
+      );
+      console.log("\n");
+      console.table(employees);
+
+      prompt([
+        {
+          type: "list",
+          name: "employee_id",
+          message: "Which Employee's role do you want to update?",
+          required: true,
+          choices: employeeChoices,
+        },
+      ]).then(({ employee_id }) => {
+        db.findAllRoles().then(({ rows }) => {
+          let roles = rows;
+          const roleChoices = roles.map(({ id, title }) => ({
+            name: title,
+            value: id,
+          }));
+
+          prompt([
+            {
+              type: "list",
+              name: "role_id",
+              message: "Which Role Do You Want To Assign?",
+              required: true,
+              choices: roleChoices,
+            },
+          ]).then(({ role_id }) => {
+            db.updateEmployeeRole(employee_id, role_id)
+              .then(() => {
+                console.log("Employee Role Updated.");
+                loadMainPrompts();
+              })
+              .catch((err) => {
+                console.error("Error Updating Employee Role", err);
+                loadMainPrompts();
+              });
+          });
+        });
+      });
     })
     .catch((err) => {
-      console.error("Error Updating Employee Role", err);
+      console.error("Error retrieving employees:", err);
       loadMainPrompts();
     });
 }
+
 // BONUS- Create a function to Update an employee's manager
 function updateEmployeeManager(employeeId, managerId) {
   db.updateEmployeeManager(employeeId, managerId)
