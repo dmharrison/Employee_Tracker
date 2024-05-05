@@ -68,10 +68,9 @@ function loadMainPrompts() {
       case "View All Departments":
         viewAllDepartments();
         break;
-      case "Add Departments":
-        addRole();
+      case "Add Department":
+        addDepartment();
         break;
-
       default:
         quit();
     }
@@ -387,16 +386,25 @@ function viewAllDepartments() {
     .then(() => loadMainPrompts());
 }
 // TODO- Create a function to Add a department
-function addDepartment(departmentData) {
-  db.createDepartment(departmentData)
-    .then(() => {
-      console.log("Department Added Successfully.");
-      loadMainPrompts();
-    })
-    .catch((err) => {
-      console.error("Error Updating Department", err);
-      loadMainPrompts();
-    });
+function addDepartment() {
+  prompt([
+    {
+      name: "name",
+      message: "Enter the name of the department:",
+      required: true,
+    },
+  ]).then((departmentData) => {
+    console.log(departmentData);
+    db.createDepartment(departmentData)
+      .then(() => {
+        console.log("Department Added Successfully.");
+        loadMainPrompts();
+      })
+      .catch((err) => {
+        console.error("Error Adding Department", err);
+        loadMainPrompts();
+      });
+  });
 }
 // BONUS- Create a function to Delete a department
 function removeDepartment(id) {
