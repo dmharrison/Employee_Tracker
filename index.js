@@ -53,6 +53,9 @@ function loadMainPrompts() {
       case "Add Employee":
         addEmployee();
         break;
+      case "Remove Employee":
+        removeEmployee();
+        break;
 
       default:
         quit();
@@ -195,16 +198,31 @@ function addEmployee() {
 }
 
 // BONUS- Create a function to Delete an employee
-function removeEmployee(id) {
-  db.removeEmployeeById(id)
-    .then(() => {
-      console.log("Employee Removed Successfully.");
-      loadMainPrompts();
-    })
-    .catch((err) => {
-      console.error("Error Removing Employee", err);
-      loadMainPrompts();
+function removeEmployee() {
+  db.findAllEmployees().then(({ rows }) => {
+    let employees = rows;
+    console.log("\n");
+    console.table(employees);
+
+    prompt([
+      {
+        type: "input",
+        name: "id",
+        message: "Enter the ID of the employee you want to remove:",
+        required: true,
+      },
+    ]).then(({ id }) => {
+      db.removeEmployeeById(id)
+        .then(() => {
+          console.log("Employee Removed Successfully.");
+          loadMainPrompts();
+        })
+        .catch((err) => {
+          console.error("Error Removing Employee", err);
+          loadMainPrompts();
+        });
     });
+  });
 }
 // TODO- Create a function to Update an employee's role
 function updateEmployeeRole(employeeId, roleId) {
