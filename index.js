@@ -320,16 +320,49 @@ function viewAllRoles() {
     .then(() => loadMainPrompts());
 }
 // TODO- Create a function to Add a role
-function addRole(roleData) {
-  db.createRole(roleData)
-    .then(() => {
-      console.log("Role Added Successfully.");
-      loadMainPrompts();
-    })
-    .catch((err) => {
-      console.error("Error Updating Role", err);
-      loadMainPrompts();
-    });
+function addRole() {
+  db.findAllDepartments().then(({ rows }) => {
+    let departments = rows;
+    const departmentChoices = departments.map(({ id, name }) => ({
+      name: name,
+      value: id,
+    }));
+
+    prompt([
+      {
+        name: "title",
+        message: "What is the title of the new role",
+        required: true,
+      },
+      {
+        name: "salary",
+        message: "What is the salary of this role",
+        required: true,
+      },
+      {
+        type: "list",
+        name: "department_id",
+        message: "What department is this role in?",
+        choices: departmentChoices,
+        required: true,
+      },
+    ])
+      .then((roleData) => {
+        db.createRole(roleData)
+          .then(() => {
+            console.log("Role Added Successfully.");
+            loadMainPrompts();
+          })
+          .catch((err) => {
+            console.error("Error Adding Role", err);
+            loadMainPrompts();
+          });
+      })
+      .catch((err) => {
+        console.error("Prompt error:", err);
+        loadMainPrompts();
+      });
+  });
 }
 // BONUS- Create a function to Delete a role
 function removeRole(id) {
